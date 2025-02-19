@@ -2,11 +2,17 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
+/** 搜索用户 GET /api/user */
+export async function searchUsers(options?: { [key: string]: any }) {
+  return request<API.CurrentUser[]>('/api/user/search', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 获取当前的用户 GET /api/user/current */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.CurrentUser;
-  }>('/api/user/current', {
+  return request<API.CurrentUser>('/api/user/current', {
     method: 'GET',
     ...(options || {}),
   });

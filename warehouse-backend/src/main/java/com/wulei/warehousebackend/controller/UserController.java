@@ -71,8 +71,8 @@ public class UserController {
         return userService.getSafeUser(user);
     }
 
-    @GetMapping("userlist")
-    public List<User> getUserList(String username, HttpServletRequest request) {
+    @GetMapping("search")
+    public List<User> searchUser(String username, HttpServletRequest request) {
         if (!isAdmin(request)) {
             return new ArrayList<>();
         }

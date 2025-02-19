@@ -142,7 +142,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User safeUser = new User();
         safeUser.setId(user.getId());
         safeUser.setUsername(user.getUsername());
-        safeUser.setUserRole(user.getUserRole());
+        safeUser.setNickname(user.getNickname());
         safeUser.setGender(user.getGender());
         safeUser.setAvatar(user.getAvatar());
         safeUser.setPhone(user.getPhone());
@@ -150,6 +150,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safeUser.setCreateTime(user.getCreateTime());
         safeUser.setUpdateTime(user.getUpdateTime());
         safeUser.setUserRole(user.getUserRole());
+        safeUser.setUserStatus(user.getUserStatus());
 
         return safeUser;
     }

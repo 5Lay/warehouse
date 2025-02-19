@@ -83,7 +83,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div id='register' className={styles.container}>
       <Helmet>
         <title>
           {'注册'}- {Settings.title}

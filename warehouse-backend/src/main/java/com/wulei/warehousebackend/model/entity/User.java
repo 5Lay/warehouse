@@ -55,7 +55,7 @@ public class User implements Serializable {
     private String email;
 
     /**
-     * 用户状态 0-异常 1-正常
+     * 用户状态 0-正常 1-异常
      */
     @TableField(value = "user_status")
     private Integer userStatus;
