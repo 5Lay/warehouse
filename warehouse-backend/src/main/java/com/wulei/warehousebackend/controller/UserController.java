@@ -2,6 +2,10 @@ package com.wulei.warehousebackend.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.wulei.warehousebackend.common.BaseResponse;
+import com.wulei.warehousebackend.common.ErrorCode;
+import com.wulei.warehousebackend.common.ResultUtils;
+import com.wulei.warehousebackend.exception.BussinessException;
 import com.wulei.warehousebackend.model.entity.User;
 import com.wulei.warehousebackend.model.request.LoginRequest;
 import com.wulei.warehousebackend.model.request.RegisterRequest;
@@ -12,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,72 +32,85 @@ public class UserController {
 
 
     @PostMapping ("/register")
-    public Long register(@RequestBody RegisterRequest registerRequest) {
+    public BaseResponse<Long> register(@RequestBody RegisterRequest registerRequest) {
         if (registerRequest == null) {
-            return null;
+            return ResultUtils.fail(ErrorCode.PARAM_ERROR);
         }
         String username = registerRequest.getUsername();
         String password = registerRequest.getPassword();
         String checkPassword = registerRequest.getCheckPassword();
 
         if (StringUtils.isAnyBlank(username, password, checkPassword)) {
-            return null;
+            return ResultUtils.fail(ErrorCode.PARAM_ERROR);
         }
+        Long result = userService.register(username, password, checkPassword);
 
-        return userService.register(username, password, checkPassword);
+        return ResultUtils.success(result);
     }
 
     @PostMapping ("/login")
-    public User login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+    public BaseResponse<User> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         if (loginRequest == null) {
-            return null;
+            throw new BussinessException(ErrorCode.PARAM_ERROR);
         }
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
 
         if (StringUtils.isAnyBlank(username, password)) {
-            return null;
+            throw new BussinessException(ErrorCode.PARAM_ERROR);
         }
+        User user = userService.login(username, password, request);
+        return ResultUtils.success(user);
+    }
 
-        return userService.login(username, password, request);
+    @PostMapping ("/logout")
+    public BaseResponse<Integer> logout(HttpServletRequest request) {
+        if (request == null) {
+            throw new BussinessException(ErrorCode.PARAM_ERROR);
+        }
+        int logout = userService.logout(request);
+        return ResultUtils.success(logout);
     }
 
     @GetMapping ("/current")
-    public User getCurrentUser(HttpServletRequest request) {
+    public BaseResponse<User> getCurrentUser(HttpServletRequest request) {
         User currentUser = (User) request.getSession().getAttribute(USER_LOGIN_STATUS);
         if (currentUser == null) {
-            return null;
+            throw new BussinessException(ErrorCode.USER_NOT_LOGIN);
         }
         Long id = currentUser.getId();
         // todo: 验证用户是否合法
         User user = userService.getById(id);
-        return userService.getSafeUser(user);
+        User safeUser = userService.getSafeUser(user);
+        return ResultUtils.success(safeUser);
     }
 
     @GetMapping("search")
-    public List<User> searchUser(String username, HttpServletRequest request) {
+    public BaseResponse<List<User>> searchUser(String username, HttpServletRequest request) {
         if (!isAdmin(request)) {
-            return new ArrayList<>();
+            throw new BussinessException(ErrorCode.USER_WITHOUT_PERMISSION);
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(username)) {
             queryWrapper.like("username", username);
         }
         List<User> userList = userService.list(queryWrapper);
-        return userList.stream().map(user -> {
+        List<User> safeUserList = userList.stream().map(user -> {
             return userService.getSafeUser(user);
         }).collect(Collectors.toList());
+        return ResultUtils.success(safeUserList);
     }
 
     @DeleteMapping("delete")
-    public boolean delete(Long id, HttpServletRequest request) {
+    public BaseResponse<Boolean> delete(Long id, HttpServletRequest request) {
         if (!isAdmin(request)) {
-            return false;
+            throw new BussinessException(ErrorCode.USER_WITHOUT_PERMISSION);
         }
         if (id == null) {
-            return false;
+            throw new BussinessException(ErrorCode.PARAM_ERROR);
         }
-        return userService.removeById(id);
+        boolean remove = userService.removeById(id);
+        return ResultUtils.success(remove);
     }
 
     private boolean isAdmin(HttpServletRequest request) {

@@ -10,7 +10,7 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { Helmet, history, Link, useModel } from '@umijs/max';
-import {Alert, message, Tabs } from 'antd';
+import { message, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -52,22 +52,7 @@ const useStyles = createStyles(({ token }) => {
   };
 });
 
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('username');
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
@@ -85,11 +70,11 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       // 登录
-      const user = await login({
+      const res = await login({
         ...values,
-        type,
       });
-      if (user) {
+      console.log(res);
+      if (res.code === 200) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
@@ -97,17 +82,13 @@ const Login: React.FC = () => {
         history.push(urlParams.get('redirect') || '/');
         return;
       }
-      // 如果失败去设置用户错误信息
-      setUserLoginState(user);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
-      console.log(error);
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
   return (
-    <div className={styles.container}>
+    <div id='login' className={styles.container}>
       <Helmet>
         <title>
           {'登录'}- {Settings.title}
@@ -146,10 +127,6 @@ const Login: React.FC = () => {
               },
             ]}
           />
-
-          {status === 'error' && loginType === 'username' && (
-            <LoginMessage content={'错误的用户名和密码'} />
-          )}
           {type === 'username' && (
             <>
               <ProFormText

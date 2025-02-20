@@ -2,6 +2,8 @@ package com.wulei.warehousebackend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wulei.warehousebackend.common.ErrorCode;
+import com.wulei.warehousebackend.exception.BussinessException;
 import com.wulei.warehousebackend.model.entity.User;
 import com.wulei.warehousebackend.service.UserService;
 import com.wulei.warehousebackend.mapper.UserMapper;
@@ -37,36 +39,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Long register(String username, String password, String checkPassword) {
         // 判断用户名、密码、确认密码是否为空
         if (StringUtils.isAnyBlank(username, password, checkPassword)) {
-            return -1L;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "用户名、密码、确认密码不能为空");
         }
 
         // 判断用户名长度是否小于4
         if (username.length() < 4 ) {
-            return  -1L;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "用户名长度不能小于4");
         }
 
         // 判断密码长度是否小于8
         if (password.length() < 8) {
-            return -1L;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "密码长度不能小于8");
         }
 
         // 判断用户名是否包含特殊字符
         String regex = "[!@#$%^&*(){}\\[\\]:;\"',.<>?/~`]";
         Pattern pattern = Pattern.compile(regex);
         if (pattern.matcher(username).find()) {
-            return -1L;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "用户名不能包含特殊字符");
         }
 
         // 判断两次输入的密码是否相同
         if (!password.equals(checkPassword)) {
-            return -1L;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "两次输入的密码不一致");
         }
 
         // 判断用户名是否已存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         if (userMapper.selectOne(queryWrapper) != null) {
-            return -1L;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "用户名已存在");
         }
 
         // 加密
@@ -78,7 +80,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setPassword(encodePassword);
         int result = userMapper.insert(user);
         if (result == 0) {
-            return -1L;
+            throw new BussinessException(ErrorCode.SYSTEM_ERROR, "用户注册失败");
         }
         return user.getId();
     }
@@ -88,24 +90,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 判断用户名、密码、确认密码是否为空
         if (StringUtils.isAnyBlank(username, password)) {
             // todo 全局异常处理
-            return null;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "用户名、密码不能为空");
         }
 
         // 判断用户名长度是否小于4
         if (username.length() < 4 ) {
-            return  null;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "用户名长度不能小于4");
         }
 
         // 判断密码长度是否小于8
         if (password.length() < 8) {
-            return null;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "密码长度不能小于8");
         }
 
         // 判断用户名是否包含特殊字符
         String regex = "[!@#$%^&*(){}\\[\\]:;\"',.<>?/~`]";
         Pattern pattern = Pattern.compile(regex);
         if (pattern.matcher(username).find()) {
-            return null;
+            throw new BussinessException(ErrorCode.PARAM_ERROR, "用户名不能包含特殊字符");
         }
 
         String encodePassword = DigestUtils.md5DigestAsHex((SALT + password).getBytes());
@@ -116,7 +118,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             log.info("user login failed, username can't match password");
-            return null;
+            throw new BussinessException(ErrorCode.USER_ACCOUNT_ERROR, "用户名或密码错误");
         }
 
         // 用户脱敏
@@ -128,6 +130,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         return safeUser;
     }
+
+    @Override
+    public int logout(HttpServletRequest request) {
+        request.getSession().removeAttribute(USER_LOGIN_STATUS);
+        return 1;
+    }
+
 
     /**
      * 用户信息脱敏

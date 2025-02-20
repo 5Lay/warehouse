@@ -128,10 +128,9 @@ const UserManage: React.FC = () => {
         request={async (params, sort, filter) => {
           console.log(sort, filter);
           // await waitTime(2000);
-          const userList = await searchUsers();
-          console.log(userList);
+          const res = await searchUsers();
           return {
-            data: userList
+            data: res.data,
           };
         }}
         editable={{

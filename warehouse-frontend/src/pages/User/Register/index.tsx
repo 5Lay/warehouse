@@ -7,7 +7,7 @@ import {
   LoginForm,
   ProFormText,
 } from '@ant-design/pro-components';
-import { Helmet, history } from '@umijs/max';
+import { Helmet, history, Link } from '@umijs/max';
 import {message, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
 import React from 'react';
@@ -59,10 +59,10 @@ const Register: React.FC = () => {
     }
     try {
       // 注册
-      const id = await register({
+      const res = await register({
         ...values,
       });
-      if (id > 0) {
+      if (res.code === 200 && res.data > 0) {
         const defaultRegisterSuccessMessage = '注册成功！';
         message.success(defaultRegisterSuccessMessage);
 
@@ -72,12 +72,9 @@ const Register: React.FC = () => {
         const query = new URLSearchParams(history.location.search);
         history.push({pathname: '/user/login', search: query.toString()});
         return;
-      } else {
-        throw new Error(`register failed, id: ${id}`);
       }
-    } catch (error) {
+    } catch (error : any) {
       const defaultRegisterFailureMessage = '注册失败，请重试！';
-      console.log(error);
       message.error(defaultRegisterFailureMessage);
     }
   };
@@ -182,6 +179,16 @@ const Register: React.FC = () => {
               ]}
             />
           </>
+
+          <div
+            style={{
+              display: 'flex',
+              flexFlow: 'row-reverse',
+              marginBottom: 24,
+            }}
+          >
+              <Link to="/user/login">已有账号？去登录</Link>
+          </div>
         </LoginForm>
       </div>
       <Footer />

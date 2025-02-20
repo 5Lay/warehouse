@@ -22,7 +22,8 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      return await queryCurrentUser();
+      const res = await queryCurrentUser()
+      return res.data;
     } catch (error) {
       history.push(loginPath);
     }
@@ -135,5 +136,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request: RequestConfig = {
+  timeout: 10000,
   ...errorConfig,
 };
