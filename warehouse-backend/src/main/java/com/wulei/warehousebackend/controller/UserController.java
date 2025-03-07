@@ -85,7 +85,7 @@ public class UserController {
         return ResultUtils.success(safeUser);
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     public BaseResponse<List<User>> searchUser(String username, HttpServletRequest request) {
         if (!isAdmin(request)) {
             throw new BussinessException(ErrorCode.USER_WITHOUT_PERMISSION);
@@ -101,8 +101,8 @@ public class UserController {
         return ResultUtils.success(safeUserList);
     }
 
-    @DeleteMapping("delete")
-    public BaseResponse<Boolean> delete(Long id, HttpServletRequest request) {
+    @DeleteMapping("/{id}")
+    public BaseResponse<Boolean> delete(@PathVariable Long id, HttpServletRequest request) {
         if (!isAdmin(request)) {
             throw new BussinessException(ErrorCode.USER_WITHOUT_PERMISSION);
         }
@@ -113,8 +113,25 @@ public class UserController {
         return ResultUtils.success(remove);
     }
 
+    @PutMapping("/")
+    public BaseResponse<Boolean> update(@RequestBody User user, HttpServletRequest request) {
+        if (user == null) {
+            throw new BussinessException(ErrorCode.PARAM_ERROR);
+        }
+        if (!isAdmin(request) || !isSelf(user, request)) {
+            throw new BussinessException(ErrorCode.USER_WITHOUT_PERMISSION);
+        }
+        boolean update = userService.updateById(user);
+        return ResultUtils.success(update);
+    }
+
     private boolean isAdmin(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(USER_LOGIN_STATUS);
         return user != null && user.getUserRole() == ADMIN_ROLE;
+    }
+
+    private boolean isSelf(User user, HttpServletRequest request) {
+        User currentUser = (User) request.getSession().getAttribute(USER_LOGIN_STATUS);
+        return currentUser != null  && currentUser.getId().equals(user.getId());
     }
 }

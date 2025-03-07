@@ -1,7 +1,9 @@
-package com.wulei.warehousebackend.model.entity;
+package generator.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -67,33 +69,27 @@ public class User implements Serializable {
     /**
      * 用户状态 0-正常 1-异常
      */
-    @TableField(value = "user_status")
-    private Integer userStatus;
+    private Integer user_status;
 
     /**
      * 创建时间
      */
-    @TableField(value = "create_time")
-    private Date createTime;
+    private Date create_time;
 
     /**
-     *  更新时间
+     * 更新时间
      */
-    @TableField(value = "update_time")
-    private Date updateTime;
+    private Date update_time;
 
     /**
      * 是否删除（逻辑删除） 0-未删除 1-已删除
      */
-    @TableField(value = "is_delete")
-    @TableLogic
-    private Integer isDeleted;
+    private Integer is_delete;
 
     /**
      * 用户角色 默认值0（普通用户） 、1（管理员）
      */
-    @TableField(value = "user_role")
-    private Integer userRole;
+    private Integer user_role;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

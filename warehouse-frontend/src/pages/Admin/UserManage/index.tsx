@@ -1,9 +1,10 @@
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable, TableDropdown } from '@ant-design/pro-components';
+import { ProTable } from '@ant-design/pro-components';
 import {Image} from 'antd';
 import { useRef } from 'react';
 import React from 'react';
-import { searchUsers } from '@/services/ant-design-pro/api';
+import { searchUsers, deleteUser, updateUser } from '@/services/ant-design-pro/api';
+
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -24,6 +25,13 @@ const columns: ProColumns<API.CurrentUser>[] = [
     width: 48,
   },
   {
+    title: 'ID',
+    dataIndex: 'id',
+    valueType: 'indexBorder',
+    hideInTable: true,
+    editable: false,
+  },
+  {
     title: '昵称',
     dataIndex: 'nickname',
     copyable: true,
@@ -32,11 +40,13 @@ const columns: ProColumns<API.CurrentUser>[] = [
     title: '用户名',
     dataIndex: 'username',
     copyable: true,
+    editable: false
   },
   {
     title: '头像',
     dataIndex: 'avatar',
     search: false,
+    editable: false,
     render: (_, record) => (
       <div>
         <Image src={record.avatar} width={50} height={50}/>
@@ -46,6 +56,21 @@ const columns: ProColumns<API.CurrentUser>[] = [
   {
     title: '性别',
     dataIndex: 'gender',
+    valueType: 'select',
+    valueEnum: {
+      0: { text: '未知', color: 'grey' },
+      1: { text: '男', color: 'blue' },
+      2: { text: '女', color: 'pink' },
+    },
+  },
+  {
+    title: '年龄',
+    dataIndex: 'age',
+  },
+  {
+    title: '住址',
+    dataIndex: 'address',
+    copyable: true,
   },
   {
     title: '电话',
@@ -79,7 +104,8 @@ const columns: ProColumns<API.CurrentUser>[] = [
     title: '创建时间',
     dataIndex: 'createTime',
     valueType: 'dateTime',
-    hideInTable: true,
+    hideInTable: false,
+    editable: false,
     search: {
       transform: (value) => {
         return {
@@ -102,23 +128,13 @@ const columns: ProColumns<API.CurrentUser>[] = [
       >
         编辑
       </a>,
-      // <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
-      //   查看
-      // </a>,
-      <TableDropdown
-        key="actionGroup"
-        onSelect={() => action?.reload()}
-        menus={[
-          { key: 'copy', name: '复制' },
-          { key: 'delete', name: '删除' },
-        ]}
-      />,
     ],
   },
 ];
 
 const UserManage: React.FC = () => {
   const actionRef = useRef<ActionType>();
+
   return (
     <div id='user-manage'>
       <ProTable<API.CurrentUser>
@@ -135,7 +151,15 @@ const UserManage: React.FC = () => {
         }}
         editable={{
           type: 'multiple',
+          onSave: async (key, row) => {
+            await updateUser(row);
+          },
+          onDelete: async (key, row) => {
+            console.log(key, row);
+            await deleteUser(row.id);
+          }
         }}
+        
         columnsState={{
           persistenceKey: 'pro-table-singe-demos',
           persistenceType: 'localStorage',
@@ -172,7 +196,7 @@ const UserManage: React.FC = () => {
           onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
-        headerTitle="高级表格"
+        headerTitle="用户管理"
         toolBarRender={() => [
           
  

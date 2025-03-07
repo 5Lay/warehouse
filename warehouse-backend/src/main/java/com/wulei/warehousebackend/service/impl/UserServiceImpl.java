@@ -153,7 +153,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safeUser.setUsername(user.getUsername());
         safeUser.setNickname(user.getNickname());
         safeUser.setGender(user.getGender());
+        safeUser.setAge(user.getAge());
         safeUser.setAvatar(user.getAvatar());
+        safeUser.setAddress(user.getAddress());
         safeUser.setPhone(user.getPhone());
         safeUser.setEmail(user.getEmail());
         safeUser.setCreateTime(user.getCreateTime());

@@ -8,13 +8,15 @@ declare namespace API {
     message: string;
     description: string;
   };
-
+  
   type CurrentUser = {
     id: number
     username?: string;
     nickname?: string;
     gender?: number;
+    age?: number;
     avatar?: string;
+    address?: string;
     phone?: string;
     email?: string;
     userStatus?: number;

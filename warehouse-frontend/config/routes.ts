@@ -10,6 +10,7 @@ export default [
 
     ],
   },
+  
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
   {
     path: '/admin',
@@ -24,6 +25,15 @@ export default [
     ],
   },
   { name: '查询表格', icon: 'table', path: '/list', component: './TableList' },
+  {
+    path: '/user',
+    name: '个人页',
+    icon: 'user',
+    Component: './User',
+    routes: [
+      { name: '个人中心', path: '/user/info', component: './User/Info' },
+    ],
+  },
   { path: '/', redirect: '/welcome' },
   { path: '*', layout: false, component: './404' },
 ];

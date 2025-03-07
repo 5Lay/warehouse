@@ -23,7 +23,8 @@ declare namespace API {
 
   type deleteUserParams = {
     /** The name that needs to be deleted */
-    username: string;
+    id?: number;
+    username?: string;
   };
 
   type findPetsByStatusParams = {

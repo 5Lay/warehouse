@@ -2,6 +2,26 @@
 /* eslint-disable */
 import request from '@/plugins/globalRequests';
 
+/** 删除用户 Delete /api/user */
+export async function deleteUser(id: number, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/user/${id}`, {
+    method: 'Delete',
+    ...(options || {}),
+  });
+}
+
+/** 更新用户 Put /api/user */
+export async function updateUser(body: API.CurrentUser,options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/user/`, {
+    method: 'Put',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 搜索用户 GET /api/user */
 export async function searchUsers(options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.CurrentUser[]>>('/api/user/search', {
