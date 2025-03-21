@@ -20,11 +20,24 @@ export default [
     Component: './Admin',
     routes: [
       
-      { path: '/admin/user-manage', name: '用户管理', icon: 'smile', component: './Admin/UserManage' },
+      { path: '/admin/user-manage', name: '用户管理',  component: './Admin/UserManage' },
+      { path: '/admin/agv-manage', name: 'AGV管理',  component: './Admin/AGVManage' },
       { Component: './404' }
     ],
   },
-  { name: '查询表格', icon: 'table', path: '/list', component: './TableList' },
+  { name: '订单管理', icon: 'table', path: '/list', component: './TableList' },
+  {
+    path: '/simulate',
+    name: '仿真页',
+    icon: 'crown',
+    Component: './Simulate',
+    routes: [
+      
+      { path: '/simulate/screen', name: '仿真大屏',  component: './Simulate/Screen' },
+      { path: '/simulate/manage', name: '仿真管理',  component: './Simulate/SimulateManage' },
+      { Component: './404' }
+    ],
+  },
   {
     path: '/user',
     name: '个人页',
@@ -34,6 +47,7 @@ export default [
       { name: '个人中心', path: '/user/info', component: './User/Info' },
     ],
   },
+  
   { path: '/', redirect: '/welcome' },
   { path: '*', layout: false, component: './404' },
 ];

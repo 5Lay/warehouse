@@ -6,10 +6,10 @@
 
     <resultMap id="BaseResultMap" type="com.wulei.warehousebackend.model.entity.Agv">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="start_x" column="start_x" jdbcType="INTEGER"/>
-            <result property="start_y" column="start_y" jdbcType="INTEGER"/>
-            <result property="goal_x" column="goal_x" jdbcType="INTEGER"/>
-            <result property="goal_y" column="goal_y" jdbcType="INTEGER"/>
+            <result property="startX" column="start_x" jdbcType="INTEGER"/>
+            <result property="startY" column="start_y" jdbcType="INTEGER"/>
+            <result property="goalX" column="goal_x" jdbcType="INTEGER"/>
+            <result property="goalY" column="goal_y" jdbcType="INTEGER"/>
             <result property="actions" column="actions" jdbcType="VARCHAR"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>

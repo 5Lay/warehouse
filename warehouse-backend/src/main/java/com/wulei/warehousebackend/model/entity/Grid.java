@@ -12,44 +12,34 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 自动引导车
- * @TableName agv
+ * 仓库地图
+ * @TableName grid
  */
-@TableName(value ="agv")
+@TableName(value ="grid")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Agv implements Serializable {
+public class Grid implements Serializable {
     /**
-     * AGV_ID
+     * 地图id
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 起点X坐标
+     * 行数
      */
-    private Integer startX;
+    private Integer gridRow;
 
     /**
-     * 起点Y坐标
+     * 列数
      */
-    private Integer startY;
+    private Integer gridCol;
 
     /**
-     * 终点X坐标
+     * 栅格地图压缩后的字符串
      */
-    private Integer goalX;
-
-    /**
-     * 终点Y坐标
-     */
-    private Integer goalY;
-
-    /**
-     * 路径动作
-     */
-    private String actions;
+    private String gridMap;
 
     /**
      * 创建时间

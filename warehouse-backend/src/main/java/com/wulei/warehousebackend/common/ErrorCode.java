@@ -15,7 +15,8 @@ public enum ErrorCode {
     USER_HAS_EXISTED(40007, "user has existed", ""),
     TOKEN_ERROR(40008, "token error", ""),
     TOKEN_EXPIRE(40009, "token expire", ""),
-    SYSTEM_ERROR(50000, "system error", "");
+    SYSTEM_ERROR(50000, "system error", ""),
+    PATH_PLAN_ERROR(50001,"path plan error ","");
 
     /**
      * 错误码

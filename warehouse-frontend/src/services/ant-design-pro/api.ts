@@ -2,6 +2,66 @@
 /* eslint-disable */
 import request from '@/plugins/globalRequests';
 
+/** 更新Grid Put /api/grid/ */
+export async function updateGrid(body: API.GridData, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<number>>(`/api/grid`, {
+    method: 'Put',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 获取当前的用户 GET /api/grid/{id} */
+export async function getGridData(id: number, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.GridData>>(`/api/grid/${id}`, {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 获取AGV列表 GET /api/agv/ */
+export async function getAgcList(options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.Agv[]>>('/api/agv', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 删除用户 Delete /api/agv/{id} */
+export async function deleteAgv(id: number, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/agv/${id}`, {
+    method: 'Delete',
+    ...(options || {}),
+  });
+}
+
+/** 更新AGV Put /api/agv/ */
+export async function updateAgv(body: API.Agv, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/agv`, {
+    method: 'Put',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 添加AGV POST /api/agv/ */
+export async function addAgv(body: API.Agv, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<Boolean>>('/api/agv', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 删除用户 Delete /api/user */
 export async function deleteUser(id: number, options?: { [key: string]: any }) {
   return request<API.BaseResponse<boolean>>(`/api/user/${id}`, {
@@ -12,7 +72,7 @@ export async function deleteUser(id: number, options?: { [key: string]: any }) {
 
 /** 更新用户 Put /api/user */
 export async function updateUser(body: API.CurrentUser,options?: { [key: string]: any }) {
-  return request<API.BaseResponse<boolean>>(`/api/user/`, {
+  return request<API.BaseResponse<boolean>>(`/api/user`, {
     method: 'Put',
     headers: {
       'Content-Type': 'application/json',

@@ -8,6 +8,11 @@ declare namespace API {
     message: string;
     description: string;
   };
+
+  type GridData = {
+    id: number
+    grid: number[][];
+  };
   
   type CurrentUser = {
     id: number
@@ -23,6 +28,17 @@ declare namespace API {
     userRole?: number;
     createTime?: Date;
   };
+
+  type Agv = {
+    id: number;
+    startX?: number;
+    startY?: number;
+    goalX?: number;
+    goalY?: number;
+    action?: string;
+    createTime?: Date;
+    updateTime?: Date;
+  }
 
   type LoginResult = {
     status?: string;
