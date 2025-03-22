@@ -1,29 +1,32 @@
-import { addAgv, deleteAgv, getAgvList, updateAgv } from '@/services/ant-design-pro/api';
+import { addOrder, deleteOrder, getOrderList, updateOrder } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
+import {
+  ActionType,
+  ProColumns,
+  ProTable,
+} from '@ant-design/pro-components';
+import '@umijs/max';
 import { Button, Form, Input, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 
-
-const columns: ProColumns<API.Agv>[] = [
+const columns: ProColumns<API.Order>[] = [
   {
     dataIndex: 'index',
     valueType: 'indexBorder',
     width: 48,
   },
   {
-    title: 'AGV编号',
+    title: '订单编号',
     dataIndex: 'id',
     editable: false,
   },
   {
-    title: '起点X坐标',
-    dataIndex: 'startX',
+    title: '目标X坐标',
+    dataIndex: 'goalX',
   },
   {
-    title: '起点Y坐标',
-    dataIndex: 'startY',
+    title: '目标Y坐标',
+    dataIndex: 'goalY',
   },
   {
     title: '创建时间',
@@ -72,47 +75,46 @@ const columns: ProColumns<API.Agv>[] = [
   },
 ];
 
-interface Values {
-  startX?: number;
-  startY?: number;
-}
-
-const UserManage: React.FC = () => {
+const OrderManage: React.FC = () => {
   const actionRef = useRef<ActionType>();
-
   const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
 
-  const onCreate = async (values: Values) => {
+  const onCreate = async (values: API.Order) => {
     console.log('Received values of form: ', values);
-    await addAgv(values as API.Agv);
+    await addOrder(values);
     actionRef.current?.reload();
     setOpen(false);
   };
 
+  
   return (
-    <div id="agv-manage">
-      <ProTable<API.Agv>
+    <div id="order-manage">
+      <ProTable<API.Order, API.PageParams>
         columns={columns}
-        actionRef={actionRef}
         cardBordered
+        headerTitle={'订单列表'}
+        actionRef={actionRef}
+        rowKey="id"
+
         request={async (params, sort, filter) => {
           console.log(sort, filter);
           // await waitTime(2000);
-          const res = await getAgvList();
+          const res = await getOrderList();
           console.log(res);
           return {
             data: res.data,
           };
         }}
+
         editable={{
           type: 'multiple',
           onSave: async (key, row) => {
-            await updateAgv(row);
+            await updateOrder(row);
           },
           onDelete: async (key, row) => {
             console.log(key, row);
-            await deleteAgv(row.id);
+            await deleteOrder(row.id);
           },
         }}
         columnsState={{
@@ -125,7 +127,6 @@ const UserManage: React.FC = () => {
             console.log('value: ', value);
           },
         }}
-        rowKey="id"
         search={{
           labelWidth: 'auto',
         }}
@@ -151,7 +152,6 @@ const UserManage: React.FC = () => {
           onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
-        headerTitle="AGV管理"
         toolBarRender={() => [
           <Button
             key="button"
@@ -187,16 +187,16 @@ const UserManage: React.FC = () => {
         )}
       >
         <Form.Item
-          name="startX"
-          label="起点X坐标"
-          rules={[{ required: true, message: '请输入AGV起点X坐标' }]}
+          name="goalX"
+          label="目标X坐标"
+          rules={[{ required: true, message: '请输入订单目标X坐标' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          name="startY"
-          label="起点Y坐标"
-          rules={[{ required: true, message: '请输入AGV起点Y坐标' }]}
+          name="goalY"
+          label="目标Y坐标"
+          rules={[{ required: true, message: '请输入订单目标Y坐标' }]}
         >
           <Input />
         </Form.Item>
@@ -204,4 +204,4 @@ const UserManage: React.FC = () => {
     </div>
   );
 };
-export default UserManage;
+export default OrderManage;

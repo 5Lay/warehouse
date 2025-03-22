@@ -6,35 +6,30 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * 自动引导车
- * @TableName agv
+ * 订单表
+ * @TableName order
  */
-@TableName(value ="agv")
+@TableName(value ="order_info")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Agv implements Serializable {
+public class Order implements Serializable {
     /**
-     * AGV_ID
+     * 订单id
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 起点X坐标
+     * 目的地X坐标
      */
-    private Integer startX;
+    private Integer goalX;
 
     /**
-     * 起点Y坐标
+     * 目的地Y坐标
      */
-    private Integer startY;
+    private Integer goalY;
 
     /**
      * 创建时间

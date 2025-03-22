@@ -8,16 +8,12 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="startX" column="start_x" jdbcType="INTEGER"/>
             <result property="startY" column="start_y" jdbcType="INTEGER"/>
-            <result property="goalX" column="goal_x" jdbcType="INTEGER"/>
-            <result property="goalY" column="goal_y" jdbcType="INTEGER"/>
-            <result property="actions" column="actions" jdbcType="VARCHAR"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,start_x,start_y,
-        goal_x,goal_y,actions,
         createTime,updateTime
     </sql>
 </mapper>

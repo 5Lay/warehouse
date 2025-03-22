@@ -6,45 +6,45 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * 自动引导车
- * @TableName agv
+ * 路径表
+ * @TableName path
  */
-@TableName(value ="agv")
+@TableName(value ="path")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Agv implements Serializable {
+public class Path implements Serializable {
     /**
-     * AGV_ID
+     * 路径id
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 起点X坐标
+     * AGV_id
      */
-    private Integer startX;
+    private Long agvId;
 
     /**
-     * 起点Y坐标
+     * 订单id
      */
-    private Integer startY;
+    private Long orderId;
+
+    /**
+     * 每一步的动作
+     */
+    private String actions;
+
+    /**
+     * 
+     */
+    private Long recordId;
 
     /**
      * 创建时间
      */
     private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

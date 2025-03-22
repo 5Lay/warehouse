@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,6 +122,7 @@ public class UserController {
         if (!isAdmin(request) || !isSelf(user, request)) {
             throw new BussinessException(ErrorCode.USER_WITHOUT_PERMISSION);
         }
+        user.setUpdateTime(new Date());
         boolean update = userService.updateById(user);
         return ResultUtils.success(update);
     }

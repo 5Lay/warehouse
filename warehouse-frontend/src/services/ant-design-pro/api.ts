@@ -2,6 +2,46 @@
 /* eslint-disable */
 import request from '@/plugins/globalRequests';
 
+/** 删除用户 Delete /api/order/{id} */
+export async function deleteOrder(id: number, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/order/${id}`, {
+    method: 'Delete',
+    ...(options || {}),
+  });
+}
+
+/** 更新AGV Put /api/order/ */
+export async function updateOrder(body: API.Order, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<boolean>>(`/api/order`, {
+    method: 'Put',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 添加AGV POST /api/order/ */
+export async function addOrder(body: API.Order, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<Boolean>>('/api/order', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 获取AGV列表 GET /api/order/ */
+export async function getOrderList(options?: { [key: string]: any }) {
+  return request<API.BaseResponse<API.Order[]>>('/api/order', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 更新Grid Put /api/grid/ */
 export async function updateGrid(body: API.GridData, options?: { [key: string]: any }) {
   return request<API.BaseResponse<number>>(`/api/grid`, {
@@ -23,7 +63,7 @@ export async function getGridData(id: number, options?: { [key: string]: any }) 
 }
 
 /** 获取AGV列表 GET /api/agv/ */
-export async function getAgcList(options?: { [key: string]: any }) {
+export async function getAgvList(options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.Agv[]>>('/api/agv', {
     method: 'GET',
     ...(options || {}),

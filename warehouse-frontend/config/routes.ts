@@ -25,7 +25,7 @@ export default [
       { Component: './404' }
     ],
   },
-  { name: '订单管理', icon: 'table', path: '/list', component: './TableList' },
+  { name: '订单管理', icon: 'table', path: '/order-manage', component: './OrderManage' },
   {
     path: '/simulate',
     name: '仿真页',

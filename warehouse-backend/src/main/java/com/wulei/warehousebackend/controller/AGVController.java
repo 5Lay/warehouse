@@ -61,6 +61,9 @@ public class AGVController {
         if (!isAdmin(request)) {
             throw new BussinessException(ErrorCode.USER_WITHOUT_PERMISSION);
         }
+        if (id == null) {
+            throw new BussinessException(ErrorCode.PARAM_ERROR);
+        }
         boolean result = agvService.removeById(id);
         return ResultUtils.success(result);
     }

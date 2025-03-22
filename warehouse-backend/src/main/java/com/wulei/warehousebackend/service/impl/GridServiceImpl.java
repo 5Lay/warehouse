@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class GridServiceImpl extends ServiceImpl<GridMapper, Grid>
     @Override
     public Integer updateGridMap(GridDto gridDto) {
         Grid gridObj = gridDtoToObj(gridDto);
+        gridObj.setUpdateTime(new Date());
         return gridMapper.updateById(gridObj);
     }
 

@@ -9,6 +9,14 @@ declare namespace API {
     description: string;
   };
 
+  type Order = {
+    id:number;
+    goalX?: number;
+    goalY?: number;
+    createTime?: Date;
+    updateTime?: Date;
+  };
+
   type GridData = {
     id: number
     grid: number[][];
@@ -33,9 +41,6 @@ declare namespace API {
     id: number;
     startX?: number;
     startY?: number;
-    goalX?: number;
-    goalY?: number;
-    action?: string;
     createTime?: Date;
     updateTime?: Date;
   }
