@@ -19,6 +19,7 @@ public class TaskWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         String taskId = getTaskIdFromUri(session);
+        System.out.println("websocket taskID is " + taskId);
         sessions.put(taskId, session);
     }
 
@@ -31,6 +32,7 @@ public class TaskWebSocketHandler extends TextWebSocketHandler {
         WebSocketSession session = sessions.get(taskId);
         if (session != null && session.isOpen()) {
             try {
+                System.out.println("ws send response:" + response);
                 session.sendMessage(new TextMessage(serialize(response)));
             } catch (IOException e) {
                 sessions.remove(taskId);

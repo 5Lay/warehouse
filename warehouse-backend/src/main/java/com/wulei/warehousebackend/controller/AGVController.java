@@ -1,6 +1,9 @@
 package com.wulei.warehousebackend.controller;
 
 import cn.hutool.core.date.DateTime;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wulei.warehousebackend.common.BaseResponse;
 import com.wulei.warehousebackend.common.ErrorCode;
 import com.wulei.warehousebackend.common.ResultUtils;
@@ -18,6 +21,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +92,8 @@ public class AGVController {
 
     @PostMapping("/paths")
     public BaseResponse planPaths(@Valid @RequestBody PathRequest request) {
-        PathResponse response = agvService.getPaths(request);
+        System.out.println("PathRequest:"  + request);
+        String response = agvService.getPaths(request);
         return ResultUtils.success(response);
     }
 
@@ -97,10 +102,14 @@ public class AGVController {
             @RequestBody Map<String, Object> payload
     ) {
         String taskId = (String) payload.get("taskId");
-//        PathResponse response = convertToResponse(payload.get("result"));
-//        agvService.processPythonCallback(taskId, response);
-        Object paths = payload.get("result");
-        System.out.println(taskId + paths);
-        return ResultUtils.success(payload);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        PathResponse response = objectMapper.convertValue(payload.get("result"), PathResponse.class);
+        System.out.println("pathResponse:" + response);
+        agvService.processPythonCallback(taskId, response);
+        Object result = payload.get("result");
+//        System.out.println(taskId + result);
+        return ResultUtils.success(result);
     }
 }
+

@@ -12,7 +12,7 @@ import com.wulei.warehousebackend.model.response.PathResponse;
 */
 public interface AgvService extends IService<Agv> {
 
-    public PathResponse getPaths(PathRequest request);
+    public String getPaths(PathRequest request);
 
     public void processPythonCallback(String taskId, PathResponse response);
 

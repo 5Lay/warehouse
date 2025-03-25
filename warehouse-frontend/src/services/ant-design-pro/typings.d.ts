@@ -9,6 +9,42 @@ declare namespace API {
     description: string;
   };
 
+  type Coordinate = {
+    x: number;
+    y: number;
+  };
+
+  type PathRequest = {
+    agvId: number[];
+    orderId: number[];
+    grid: number[][];
+  };
+
+  type PathResponse = {
+    starts: Coordinate[];
+    goals: Coordinate[];
+    grid: number[][];
+    paths: Coordinate[][];
+  }
+
+  type RecordDto = {
+    starts: Coordinate[];
+    goals: Coordinate[];
+    grid: number[][];
+    paths: Coordinate[][];
+    userId: number;
+  };
+
+  type Record = {
+    id: number;
+    starts: Coordinate[];
+    goals: Coordinate[];
+    grid: number[][];
+    paths: Coordinate[][];
+    userId: number;
+    createTime: Date;
+  };
+
   type Order = {
     id:number;
     goalX?: number;

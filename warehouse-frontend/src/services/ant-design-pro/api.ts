@@ -2,6 +2,30 @@
 /* eslint-disable */
 import request from '@/plugins/globalRequests';
 
+/** 保存仿真记录 POST /api/record/ */
+export async function saveRecord(body: API.RecordDto, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<Boolean>>('/api/record', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 添加AGV POST /api/order/ */
+export async function fetchPath(body: API.PathRequest, options?: { [key: string]: any }) {
+  return request<API.BaseResponse<String>>('/api/agv/paths', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 删除用户 Delete /api/order/{id} */
 export async function deleteOrder(id: number, options?: { [key: string]: any }) {
   return request<API.BaseResponse<boolean>>(`/api/order/${id}`, {

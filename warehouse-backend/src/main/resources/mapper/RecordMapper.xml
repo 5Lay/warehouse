@@ -6,11 +6,17 @@
 
     <resultMap id="BaseResultMap" type="com.wulei.warehousebackend.model.entity.Record">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="starts" column="starts" jdbcType="VARCHAR"/>
+            <result property="goals" column="goals" jdbcType="VARCHAR"/>
+            <result property="gird" column="gird" jdbcType="VARCHAR"/>
+            <result property="paths" column="paths" jdbcType="VARCHAR"/>
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_id,create_time
+        id,starts,goals,
+        gird,paths,user_id,
+        create_time
     </sql>
 </mapper>

@@ -22,6 +22,26 @@ public class Record implements Serializable {
     private Long id;
 
     /**
+     * 起点列表
+     */
+    private String starts;
+
+    /**
+     * 目标点列表
+     */
+    private String goals;
+
+    /**
+     * 栅格地图
+     */
+    private String gird;
+
+    /**
+     * 路径列表
+     */
+    private String paths;
+
+    /**
      * 创建用户id
      */
     private Long userId;
